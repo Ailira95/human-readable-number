@@ -1,44 +1,10 @@
-
 module.exports = function toReadable (number) {
-var dg_val = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-var tn_val = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-var tw_val = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-  number = number.toString();
-    number = number.replace(/[\, ]/g, '');
-    if (number != parseFloat(number))
-       return 'not a number ';
-    var x_val = number.indexOf('.');
-    if (x_val == -1)
-        x_val = number.length;
-    if (x_val > 15)
-    return 'too big';
-    var n_val = number.split('');
-    var str_val = '';
-    var sk_val = 0;
-    for (var i = 0; i < x_val; i++) {
-        if ((x_val - i) % 3 == 2) {
-            if (n_val[i] == '1') {
-                str_val += tn_val[Number(n_val[i + 1])] + ' ';
-                i++;
-                sk_val = 1;
-            } else if (n_val[i] != 0) {
-                str_val += tw_val[n_val[i] - 2] + ' ';
-                sk_val = 1;
-            }
-        } else if (n_val[i] != 0) {
-            str_val += dg_val[n_val[i]] + ' ';
-            if ((x_val - i) % 3 == 0)
-                str_val += 'hundred ';
-            sk_val = 1;
-        }
-     
-    }
-    if (x_val != number.length) {
-        var y_val = number.length;
-        str_val += 'point ';
-        for (var i = x_val + 1; i < y_val; i++)
-            str_val += dg_val[n_val[i]] + ' ';
-    }
-    return str_val.replace(/\number+/g, ' ');
+    var num = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split(" ");
+    var tens = "twenty thirty forty fifty sixty seventy eighty ninety".split(" ");
+    if (number < 20) return num[number];
+    
+    var digit = number%10;
+    if (number < 100) return tens[~~(number/10)-2] + (digit? " " + num[digit]: "");
+    if (number < 1000) return num[~~(number/100)] +" hundred" + (number%100 == 0? "": " " + toReadable(number%100));
+    return toReadable(~~(number/1000)) + " thousand" + (number%1000 != 0? " " + toReadable(number%1000): "");
 }
-
